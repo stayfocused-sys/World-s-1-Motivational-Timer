@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World's Number One Motivational Timer</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-color: #ff6b35;
+            --gold-accent: #ffd700;
+            --text-color: #f0f0f0;
+            --secondary-text: #b0b0b0;
+            --card-bg: #252525;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+            --gradient-1: linear-gradient(135deg, #ff6b35, #f72b1c);
+            --gradient-2: linear-gradient(135deg, #ffd700, #ffb700);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%);
+        }
+
+        header {
+            background-color: var(--secondary-bg);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🏆";
+            font-size: 1.5rem;
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--card-bg);
+            color: var(--gold-accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
+        }
+
+        .card h2 {
+            color: var(--gold-accent);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card p {
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .timer-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .timer-display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 2rem 0;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-inputs input {
+            width: 80px;
+            padding: 0.5rem;
+            background-color: var(--secondary-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-inputs input:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .motivational-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .quote {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--gold-accent);
+            background-color: var(--secondary-bg);
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .quote:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .quote p {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            text-align: right;
+            color: var(--gold-accent);
+            font-weight: 600;
+        }
+
+        .special-motivation {
+            background: var(--gradient-1);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 500;
+            line-height: 1.6;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .special-motivation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .special-motivation p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient-2);
+            color: var(--bg-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        footer {
+            background-color: var(--secondary-bg);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--secondary-text);
+            margin-top: 2rem;
+            border-top: 2px solid var(--accent-color);
+        }
+
+        .world-champion-badge {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: var(--bg-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .timer-display {
+                font-size: 3rem;
+            }
+            
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">World's #1 Motivational Timer</a>
+            <div class="nav-links">
+                <a href="#" class="nav-link" data-page="home">Home</a>
+                <a href="#" class="nav-link" data-page="timer">Timer</a>
+                <a href="#" class="nav-link" data-page="you-vs-you">You vs You</a>
+                <a href="#" class="nav-link" data-page="motivation">Motivation</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <h1>Welcome to the World's #1 Motivational Timer <span class="world-champion-badge">CHAMPION</span></h1>
+            <p>Track your time, stay motivated, and achieve your goals with the world's most powerful motivational timer.</p>
+            
+            <div class="home-grid">
+                <div class="card" data-page="timer">
+                    <h2>⏱️ Champion Timer</h2>
+                    <p>Set a timer to track your work sessions and stay focused on your tasks like a champion.</p>
+                    <button class="btn">Start Timer</button>
+                </div>
+                
+                <div class="card" data-page="you-vs-you">
+                    <h2>🔥 You vs You</h2>
+                    <p>Challenge yourself with this special timer designed to push your limits beyond imagination.</p>
+                    <button class="btn">Challenge Yourself</button>
+                </div>
+                
+                <div class="card" data-page="motivation">
+                    <h2>💪 Motivational Speech</h2>
+                    <p>Get inspired with our world-class collection of motivational quotes and speeches.</p>
+                    <button class="btn">Get Inspired</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer Page -->
+        <section id="timer" class="page">
+            <h1>Champion Timer</h1>
+            <p>Set your timer and focus on your work like a world champion.</p>
+            
+            <div class="timer-container">
+                <div class="timer-inputs">
+                    <input type="number" id="hours" min="0" max="23" value="0" placeholder="HH">
+                    <input type="number" id="minutes" min="0" max="59" value="25" placeholder="MM">
+                    <input type="number" id="seconds" min="0" max="59" value="0" placeholder="SS">
+                </div>
+                
+                <div class="timer-display" id="timer-display">25:00</div>
+                
+                <div class="timer-controls">
+                    <button class="btn" id="start-timer">Start</button>
+                    <button class="btn" id="pause-timer">Pause</button>
+                    <button class="btn" id="reset-timer">Reset</button>
+                </div>
+                
+                <div id="timer-expression" class="special-motivation" style="display: none;">
+                    <p>🏆 CHAMPION! You've completed your timer session! You're one step closer to greatness! Keep pushing forward!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- You vs You Page -->
+        <section id="you-vs-you" class="page">
+            <h1>You vs You Timer</h1>
+            <p>Challenge yourself and push beyond your limits.</p>
+            
+            <div class="special-motivation">
+                <p>🔥 THE ONLY PERSON YOU SHOULD TRY TO BE BETTER THAN IS WHO YOU WERE YESTERDAY! 🔥<br>
+                This is not just a timer; it's your commitment to becoming the world's best version of yourself. Every second counts in this battle against mediocrity. Rise up and conquer!</p>
+            </div>
+            
+            <div class="timer-container">
+                <div class="timer-inputs">
+                    <input type="number" id="yvu-hours" min="0" max="23" value="0" placeholder="HH">
+                    <input type="number" id="yvu-minutes" min="0" max="59" value="30" placeholder="MM">
+                    <input type="number" id="yvu-seconds" min="0" max="59" value="0" placeholder="SS">
+                </div>
+                
+                <div class="timer-display" id="yvu-timer-display">30:00</div>
+                
+                <div class="timer-controls">
+                    <button class="btn" id="yvu-start-timer">Start</button>
+                    <button class="btn" id="yvu-pause-timer">Pause</button>
+                    <button class="btn" id="yvu-reset-timer">Reset</button>
+                </div>
+                
+                <div id="yvu-timer-expression" class="special-motivation" style="display: none;">
+                    <p>🏆 VICTORY! You've won today's battle! This victory isn't just about completing a task—it's about proving to yourself that you have the discipline to follow through. Tomorrow, you'll be even stronger! You are becoming unstoppable!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Motivation Page -->
+        <section id="motivation" class="page">
+            <h1>World's Best Motivational Speech</h1>
+            <p>Get inspired with these powerful motivational quotes from world champions.</p>
+            
+            <div class="motivational-container">
+                <div class="quote">
+                    <p>Success is not final, failure is not fatal: It is the courage to continue that counts.</p>
+                    <div class="quote-author">- Winston Churchill</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Believe you can and you're halfway there.</p>
+                    <div class="quote-author">- Theodore Roosevelt</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The only way to do great work is to love what you do.</p>
+                    <div class="quote-author">- Steve Jobs</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Don't watch the clock; do what it does. Keep going.</p>
+                    <div class="quote-author">- Sam Levenson</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The future belongs to those who believe in the beauty of their dreams.</p>
+                    <div class="quote-author">- Eleanor Roosevelt</div>
+                </div>
+                
+                <div class="quote">
+                    <p>It does not matter how slowly you go as long as you do not stop.</p>
+                    <div class="quote-author">- Confucius</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Everything you've ever wanted is on the other side of fear.</p>
+                    <div class="quote-author">- George Addair</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Success is not how high you have climbed, but how you make a positive difference to the world.</p>
+                    <div class="quote-author">- Roy T. Bennett</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Hardships often prepare ordinary people for an extraordinary destiny.</p>
+                    <div class="quote-author">- C.S. Lewis</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.</p>
+                    <div class="quote-author">- Roy T. Bennett</div>
+                </div>
+                
+                <div class="quote">
+                    <p>I learned that courage was not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear.</p>
+                    <div class="quote-author">- Nelson Mandela</div>
+                </div>
+                
+                <div class="quote">
+                    <p>What lies behind us and what lies before us are tiny matters compared to what lies within us.</p>
+                    <div class="quote-author">- Ralph Waldo Emerson</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Do what you can, with what you have, where you are.</p>
+                    <div class="quote-author">- Theodore Roosevelt</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The only impossible journey is the one you never begin.</p>
+                    <div class="quote-author">- Tony Robbins</div>
+                </div>
+                
+                <div class="quote">
+                    <p>In the middle of difficulty lies opportunity.</p>
+                    <div class="quote-author">- Albert Einstein</div>
+                </div>
+                
+                <div class="quote">
+                    <p>It is during our darkest moments that we must focus to see the light.</p>
+                    <div class="quote-author">- Aristotle</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The way to get started is to quit talking and begin doing.</p>
+                    <div class="quote-author">- Walt Disney</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Don't let yesterday take up too much of today.</p>
+                    <div class="quote-author">- Will Rogers</div>
+                </div>
+                
+                <div class="quote">
+                    <p>You learn more from failure than from success. Don't let it stop you. Failure builds character.</p>
+                    <div class="quote-author">- Unknown</div>
+                </div>
+                
+                <div class="quote">
+                    <p>If you are working on something that you really care about, you don't have to be pushed. The vision pulls you.</p>
+                    <div class="quote-author">- Steve Jobs</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Knowing is not enough; we must apply. Wishing is not enough; we must do.</p>
+                    <div class="quote-author">- Johann Wolfgang Von Goethe</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Imagine your life is perfect in every respect; what would it look like?</p>
+                    <div class="quote-author">- Brian Tracy</div>
+                </div>
+                
+                <div class="quote">
+                    <p>We generate fears while we sit. We overcome them by action.</p>
+                    <div class="quote-author">- Dr. Henry Link</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Whether you think you can or you think you can't, you're right.</p>
+                    <div class="quote-author">- Henry Ford</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Security is mostly a superstition. Life is either a daring adventure or nothing.</p>
+                    <div class="quote-author">- Helen Keller</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The man who has confidence in himself gains the confidence of others.</p>
+                    <div class="quote-author">- Hasidic Proverb</div>
+                </div>
+                
+                <div class="quote">
+                    <p>The only limit to our realization of tomorrow will be our doubts of today.</p>
+                    <div class="quote-author">- Franklin D. Roosevelt</div>
+                </div>
+                
+                <div class="quote">
+                    <p>You can't build a reputation on what you are going to do.</p>
+                    <div class="quote-author">- Henry Ford</div>
+                </div>
+                
+                <div class="quote">
+                    <p>Build your own dreams, or someone else will hire you to build theirs.</p>
+                    <div class="quote-author">- Farrah Gray</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 World's #1 Motivational Timer. All rights reserved. | Champions Only</p>
+    </footer>
+
+    <div id="notification" class="notification">
+        <p id="notification-text">Timer completed!</p>
+    </div>
+
+    <script>
+        // Navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            const cards = document.querySelectorAll('.card');
+            
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+            }
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const pageId = card.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Timer functionality
+            let timerInterval;
+            let timerSeconds = 25 * 60; // Default 25 minutes
+            let timerRunning = false;
+            
+            const timerDisplay = document.getElementById('timer-display');
+            const startBtn = document.getElementById('start-timer');
+            const pauseBtn = document.getElementById('pause-timer');
+            const resetBtn = document.getElementById('reset-timer');
+            const hoursInput = document.getElementById('hours');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const timerExpression = document.getElementById('timer-expression');
+            
+            function updateTimerDisplay() {
+                const hours = Math.floor(timerSeconds / 3600);
+                const minutes = Math.floor((timerSeconds % 3600) / 60);
+                const seconds = timerSeconds % 60;
+                
+                if (hours > 0) {
+                    timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+            
+            function startTimer() {
+                if (!timerRunning) {
+                    timerRunning = true;
+                    timerInterval = setInterval(() => {
+                        if (timerSeconds > 0) {
+                            timerSeconds--;
+                            updateTimerDisplay();
+                        } else {
+                            clearInterval(timerInterval);
+                            timerRunning = false;
+                            timerExpression.style.display = 'block';
+                            showNotification('🏆 CHAMPION! Timer completed! You\'re unstoppable!');
+                        }
+                    }, 1000);
+                }
+            }
+            
+            function pauseTimer() {
+                clearInterval(timerInterval);
+                timerRunning = false;
+            }
+            
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                
+                const hours = parseInt(hoursInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 25;
+                const seconds = parseInt(secondsInput.value) || 0;
+                
+                timerSeconds = hours * 3600 + minutes * 60 + seconds;
+                updateTimerDisplay();
+                timerExpression.style.display = 'none';
+            }
+            
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            resetBtn.addEventListener('click', resetTimer);
+            
+            hoursInput.addEventListener('change', resetTimer);
+            minutesInput.addEventListener('change', resetTimer);
+            secondsInput.addEventListener('change', resetTimer);
+            
+            // You vs You Timer functionality
+            let yvuTimerInterval;
+            let yvuTimerSeconds = 30 * 60; // Default 30 minutes
+            let yvuTimerRunning = false;
+            
+            const yvuTimerDisplay = document.getElementById('yvu-timer-display');
+            const yvuStartBtn = document.getElementById('yvu-start-timer');
+            const yvuPauseBtn = document.getElementById('yvu-pause-timer');
+            const yvuResetBtn = document.getElementById('yvu-reset-timer');
+            const yvuHoursInput = document.getElementById('yvu-hours');
+            const yvuMinutesInput = document.getElementById('yvu-minutes');
+            const yvuSecondsInput = document.getElementById('yvu-seconds');
+            const yvuTimerExpression = document.getElementById('yvu-timer-expression');
+            
+            function updateYvuTimerDisplay() {
+                const hours = Math.floor(yvuTimerSeconds / 3600);
+                const minutes = Math.floor((yvuTimerSeconds % 3600) / 60);
+                const seconds = yvuTimerSeconds % 60;
+                
+                if (hours > 0) {
+                    yvuTimerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    yvuTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+            
+            function startYvuTimer() {
+                if (!yvuTimerRunning) {
+                    yvuTimerRunning = true;
+                    yvuTimerInterval = setInterval(() => {
+                        if (yvuTimerSeconds > 0) {
+                            yvuTimerSeconds--;
+                            updateYvuTimerDisplay();
+                        } else {
+                            clearInterval(yvuTimerInterval);
+                            yvuTimerRunning = false;
+                            yvuTimerExpression.style.display = 'block';
+                            showNotification('🏆 VICTORY! You vs You timer completed! You are becoming unstoppable!');
+                        }
+                    }, 1000);
+                }
+            }
+            
+            function pauseYvuTimer() {
+                clearInterval(yvuTimerInterval);
+                yvuTimerRunning = false;
+            }
+            
+            function resetYvuTimer() {
+                clearInterval(yvuTimerInterval);
+                yvuTimerRunning = false;
+                
+                const hours = parseInt(yvuHoursInput.value) || 0;
+                const minutes = parseInt(yvuMinutesInput.value) || 30;
+                const seconds = parseInt(yvuSecondsInput.value) || 0;
+                
+                yvuTimerSeconds = hours * 3600 + minutes * 60 + seconds;
+                updateYvuTimerDisplay();
+                yvuTimerExpression.style.display = 'none';
+            }
+            
+            yvuStartBtn.addEventListener('click', startYvuTimer);
+            yvuPauseBtn.addEventListener('click', pauseYvuTimer);
+            yvuResetBtn.addEventListener('click', resetYvuTimer);
+            
+            yvuHoursInput.addEventListener('change', resetYvuTimer);
+            yvuMinutesInput.addEventListener('change', resetYvuTimer);
+            yvuSecondsInput.addEventListener('change', resetYvuTimer);
+            
+            // Notification function
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notification-text');
+                
+                notificationText.textContent = message;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Initialize displays
+            updateTimerDisplay();
+            updateYvuTimerDisplay();
+        });
+    </script>
+</body>
+</html>
