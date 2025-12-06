@@ -844,8 +844,8 @@
                 timerRunning = false;
                 
                 const hours = parseInt(hoursInput.value) || 0;
-                const minutes = parseInt(minutesInput.value) || 25;
-                const seconds = parseInt(secondsInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 0; // Fixed: no default value
+                const seconds = parseInt(secondsInput.value) || 0; // Fixed: no default value
                 
                 timerSeconds = hours * 3600 + minutes * 60 + seconds;
                 updateTimerDisplay();
@@ -913,8 +913,8 @@
                 breakTimerRunning = false;
                 
                 const hours = parseInt(breakHoursInput.value) || 0;
-                const minutes = parseInt(breakMinutesInput.value) || 5;
-                const seconds = parseInt(breakSecondsInput.value) || 0;
+                const minutes = parseInt(breakMinutesInput.value) || 0; // Fixed: no default value
+                const seconds = parseInt(breakSecondsInput.value) || 0; // Fixed: no default value
                 
                 breakTimerSeconds = hours * 3600 + minutes * 60 + seconds;
                 updateBreakTimerDisplay();
@@ -982,8 +982,8 @@
                 yvuTimerRunning = false;
                 
                 const hours = parseInt(yvuHoursInput.value) || 0;
-                const minutes = parseInt(yvuMinutesInput.value) || 30;
-                const seconds = parseInt(yvuSecondsInput.value) || 0;
+                const minutes = parseInt(yvuMinutesInput.value) || 0; // Fixed: no default value
+                const seconds = parseInt(yvuSecondsInput.value) || 0; // Fixed: no default value
                 
                 yvuTimerSeconds = hours * 3600 + minutes * 60 + seconds;
                 updateYvuTimerDisplay();
