@@ -141,8 +141,50 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .gcse-search {
+        .gcse-searchbox, .gcse-searchresults {
             width: 100%;
+            min-height: 50px;
+        }
+
+        .gsc-control-cse {
+            background-color: var(--secondary-bg) !important;
+            border: 2px solid var(--accent-color) !important;
+            border-radius: 8px !important;
+            color: var(--text-color) !important;
+            padding: 0.5rem !important;
+            font-size: 1rem !important;
+        }
+
+        .gsc-search-button {
+            background: var(--gradient-1) !important;
+            border: none !important;
+            border-radius: 4px !important;
+            color: white !important;
+            padding: 0.5rem 1rem !important;
+            cursor: pointer !important;
+        }
+
+        .gsc-results-wrapper {
+            background-color: var(--card-bg) !important;
+            border-radius: 8px !important;
+        }
+
+        .gsc-result {
+            border-bottom: 1px solid var(--secondary-bg) !important;
+            padding: 1rem !important;
+        }
+
+        .gsc-result-info {
+            color: var(--secondary-text) !important;
+        }
+
+        .gsc-result-title {
+            color: var(--gold-accent) !important;
+            text-decoration: none !important;
+        }
+
+        .gsc-result-title:hover {
+            text-decoration: underline !important;
         }
 
         main {
@@ -509,7 +551,8 @@
     </header>
 
     <div class="search-container">
-        <div class="gcse-search"></div>
+        <div class="gcse-searchbox"></div>
+        <div class="gcse-searchresults"></div>
     </div>
 
     <main>
